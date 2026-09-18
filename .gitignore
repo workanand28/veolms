@@ -1,10 +1,10 @@
 HELP.md
 target/
-.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-### STS ###
+### STS / Eclipse ###
 .apt_generated
 .classpath
 .factorypath
@@ -14,10 +14,11 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
+out/
 
 ### NetBeans ###
 /nbproject/private/
@@ -25,9 +26,56 @@ target/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
 ### VS Code ###
 .vscode/
+*.code-workspace
+
+### OS Files ###
+.DS_Store
+Thumbs.db
+desktop.ini
+
+### Logs ###
+*.log
+logs/
+
+### Build & Dependencies ###
+build/
+.gradle/
+.m2/
+
+### Application Secrets & Configuration ###
+src/main/resources/application.properties
+src/main/resources/application-*.properties
+src/main/resources/application-*.yml
+src/main/resources/application-*.yaml
+application-local.properties
+application-local.yml
+application-secret.properties
+application-secret.yml
+application-secrets.properties
+application-secrets.yml
+
+# Keep example configuration template tracked
+!src/main/resources/application.properties.example
+
+# Environment variable files
+*.env
+.env
+.env.*
+.env.local
+.env.*.local
+
+# Keys & Certificates
+*.key
+*.pem
+*.pfx
+*.p12
+*.jks
+*.keystore
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
