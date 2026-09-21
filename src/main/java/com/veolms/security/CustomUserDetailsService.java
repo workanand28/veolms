@@ -27,6 +27,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                         new UsernameNotFoundException("Invalid credentials")
                 );
 
+        if (user.getPasswordHash() == null) {
+            throw new UsernameNotFoundException("Invalid credentials");
+        }
+
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPasswordHash())

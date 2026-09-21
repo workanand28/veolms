@@ -22,7 +22,7 @@ public class User {
     private String email;
 
 
-    @Column(name = "password_hash", nullable = false, length = 100)
+    @Column(name = "password_hash", length = 100)
     private String passwordHash;
 
     @CreationTimestamp

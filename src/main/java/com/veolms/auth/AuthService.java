@@ -5,6 +5,8 @@ import com.veolms.auth.dto.LoginRequest;
 import com.veolms.auth.dto.LoginResponse;
 import com.veolms.security.JwtService;
 
+import com.veolms.user.entity.User;
+import com.veolms.user.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,13 +17,16 @@ public class AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final UserRepository userRepository;
 
     public AuthService(
             AuthenticationManager authenticationManager,
-            JwtService jwtService
+            JwtService jwtService,
+            UserRepository userRepository
     ) {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.userRepository = userRepository;
     }
 
     public LoginResponse login(LoginRequest request) {
@@ -34,9 +39,15 @@ public class AuthService {
                         )
                 );
 
-        String userId = authentication.getName();
+        String authenticatedEmail = authentication.getName();
 
-        String accessToken = jwtService.generateToken(userId);
+        User user = userRepository.findByEmailIgnoreCase(authenticatedEmail)
+                .orElseThrow(() ->
+                        new IllegalStateException("Authenticated user was not found")
+                );
+
+        String accessToken =
+                jwtService.generateToken(user.getId().toString());
 
         return new LoginResponse(
                 accessToken,
@@ -44,4 +55,5 @@ public class AuthService {
                 jwtService.getExpirationSeconds()
         );
     }
+
 }

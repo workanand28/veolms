@@ -3,8 +3,6 @@ package com.veolms.config;
 
 import com.veolms.security.CustomUserDetailsService;
 import com.veolms.security.JwtAuthenticationFilter;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.web.AuthenticationEntryPoint;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +25,7 @@ public class SecurityConfig {
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthenticationFilter,
             CustomUserDetailsService userDetailsService,
-            PasswordEncoder passwordEncoder
+                        PasswordEncoder passwordEncoder
     ) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userDetailsService = userDetailsService;
@@ -81,11 +79,14 @@ public class SecurityConfig {
                 )
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((request, response, authException) -> {
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setStatus(401);
                             response.setContentType("application/json");
                             response.getWriter().write(
-                                    "{\"status\":401,\"error\":\"Unauthorized\","
-                                            + "\"message\":\"Authentication is required\"}"
+                                    "{\"timestamp\":\"" + java.time.Instant.now()
+                                            + "\",\"status\":401,"
+                                            + "\"error\":\"Unauthorized\","
+                                            + "\"message\":\"Authentication is required\","
+                                            + "\"details\":[]}"
                             );
                         })
                 );
